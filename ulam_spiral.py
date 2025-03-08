@@ -3,6 +3,7 @@ import math
 
 w = 1000
 h = 1000
+radius = 2
 
 def math_pos_to_screen_coord(x, y):
     return (x + w/2, h/2 - y)
@@ -20,20 +21,6 @@ def is_prime(n):
             return False
         i += 6
     return True
-
-radius = 2
-def num_to_screen_coord(n):
-    pos = [0, 0]
-    s = radius * 5
-    j = 0
-    num = 1
-    for i in range(n):
-        for k in range(j):
-            num += 1
-            pos[0 if (i % 4) % 2 == 0 else 1] += s * (-1) ** (1 if i % 4 == 2 or i % 4 == 1 else 0)
-            if num == n: return math_pos_to_screen_coord(pos[0], pos[1])
-        if (i % 2 == 0): j += 1
-    return math_pos_to_screen_coord(pos[0], pos[1])
 
 pygame.init()
 
@@ -59,8 +46,7 @@ while running:
         for k in range(j):
             num += 1
             pos[0 if (i % 4) % 2 == 0 else 1] += s * (-1) ** (1 if i % 4 == 2 or i % 4 == 1 else 0)
-            color = (255, 0, 0) if is_prime(num) else (0, 0, 0)
-            pygame.draw.circle(screen, color, math_pos_to_screen_coord(pos[0], pos[1]), radius)
+            pygame.draw.circle(screen, (255, 0, 0) if is_prime(num) else (0, 0, 0), math_pos_to_screen_coord(pos[0], pos[1]), radius)
         if (i % 2 == 0): j += 1
 
     pygame.draw.circle(screen, (255, 0, 255), math_coord_to_screen_coord([0, 0]), radius)

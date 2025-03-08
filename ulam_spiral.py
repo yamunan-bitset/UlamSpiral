@@ -24,10 +24,12 @@ def is_prime(n):
 
 pygame.init()
 
-screen = pygame.display.set_mode((w, h))
+display = pygame.display.set_mode((w, h))
+screen = pygame.Surface((w, h))
 pygame.display.set_caption("Ulam Spiral")
 
 tn = 1000
+zoom = 0
 running = True
 while running:
     event = pygame.event.wait()
@@ -35,6 +37,12 @@ while running:
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_PLUS: tn += 100
         if event.key == pygame.K_MINUS: tn -= 100
+
+    if event.type == pygame.MOUSEWHEEL:
+        if event.y > 0: zoom += 1
+        if event.y < 0: zoom -= 1
+        screen = pygame.Surface((int(w / zoom), int(h / zoom)))
+        print("Zoom:", zoom)
 
     screen.fill((255, 255, 255))
 
@@ -50,4 +58,5 @@ while running:
         if (i % 2 == 0): j += 1
 
     pygame.draw.circle(screen, (255, 0, 255), math_coord_to_screen_coord([0, 0]), radius)
+    display.blit(screen, (0, 0))
     pygame.display.flip()

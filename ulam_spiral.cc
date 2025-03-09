@@ -7,6 +7,7 @@ const int HEIGHT = 800;
 const int N = 1000000;
 
 std::vector<bool> is_prime(N, true);
+std::vector<bool> is_mersenne(N, true);
 
 void sieve_of_eratosthenes() {
     is_prime[0] = is_prime[1] = false;
@@ -14,6 +15,21 @@ void sieve_of_eratosthenes() {
         if (is_prime[i]) {
             for (int j = i * i; j < N; j += i) {
                 is_prime[j] = false;
+            }
+        }
+    }
+}
+
+void find_mersenne()
+{
+    for (auto u: is_mersenne)
+        u = false;
+    for (int i = 2; i < N; ++i) {
+        if (is_prime[i]) {
+            int mersenne = pow(2, i) - 1;
+            if (mersenne > 0 && mersenne < N) {
+                if (is_prime[mersenne]) is_mersenne[mersenne] = true;
+                else is_mersenne[mersenne] = false;
             }
         }
     }
@@ -37,6 +53,12 @@ void display() {
     for (int i = 1; i < N; ++i) {
         if (is_prime[i]) {
             draw_point(x, y);
+        }
+
+        if (is_mersenne[i]) {
+            glColor3f(1.0, 0.0, 0.0);
+            draw_point(x, y);
+            glColor3f(1.0, 1.0, 1.0);
         }
 
         if (++segment_passed == segment_length) {
@@ -68,6 +90,7 @@ void init() {
 
 int main(int argc, char** argv) {
     sieve_of_eratosthenes();
+    find_mersenne();
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);

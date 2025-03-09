@@ -22,6 +22,9 @@ def is_prime(n):
         i += 6
     return True
 
+def is_mersenne(n): # WARNING! this function is very slow!!
+    return is_prime(n) and is_prime(2 ** n - 1)
+
 pygame.init()
 
 display = pygame.display.set_mode((w, h))
@@ -54,7 +57,8 @@ while running:
         for k in range(j):
             num += 1
             pos[0 if (i % 4) % 2 == 0 else 1] += s * (-1) ** (1 if i % 4 == 2 or i % 4 == 1 else 0)
-            pygame.draw.circle(screen, (255, 0, 0) if is_prime(num) else (0, 0, 0), math_pos_to_screen_coord(pos[0], pos[1]), radius)
+            if is_prime(num):
+                pygame.draw.circle(screen, (255, 0, 0), math_pos_to_screen_coord(pos[0], pos[1]), radius)
         if (i % 2 == 0): j += 1
 
     pygame.draw.circle(screen, (255, 0, 255), math_coord_to_screen_coord([0, 0]), radius)
